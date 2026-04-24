@@ -55,6 +55,7 @@ public final class TownsMenu extends PagedMenu {
         RESIDENTS(java.util.Comparator.comparingInt(t -> t.getMembers().size())),
         BALANCE(java.util.Comparator.comparingDouble(Town::getBankValue)),
         CLAIMS(java.util.Comparator.comparingInt(t -> t.getClaimedChunks().size())),
+        PLOTS(java.util.Comparator.comparingInt(t -> t.getOutpostAndClaimedChunks().size())),
         OPEN(java.util.Comparator.comparing(t -> t.getToggle(Setting.OPEN))),
         AGE((t1, t2) -> t2.getCreationDate().compareTo(t1.getCreationDate()));
 

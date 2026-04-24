@@ -735,6 +735,7 @@ public final class Town implements CreatedDateHolder, Organisation<UUID>, Forwar
             Formatter.number("members", members.size()),
             Formatter.number("members-and-owner", members.size() + 1),
             Formatter.number("claims", claimedChunks.size()),
+            Formatter.number("chunks", getOutpostAndClaimedChunks().size()),
             Formatter.number("maxclaims", getUpgradeValue(Upgrade.CLAIMS)),
             Formatter.number("outposts", outpostChunks.size()),
             Formatter.number("maxoutposts", getUpgradeValue(Upgrade.OUTPOSTS)),
