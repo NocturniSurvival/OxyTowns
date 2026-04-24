@@ -190,6 +190,7 @@ public final class Messages {
             <gray> <gray><italic>Established on <age>             <gray>
             <white> Population: <yellow><members> Players
             <white> Land Mass: <yellow><claims> Claims <white>and <yellow><outposts> Outposts<gray>.
+            <white> Chunks Claimed: <yellow><maxclaims>.
             <gray>
             <white> The town has <yellow><worth><white> in the bank and pays <yellow><upkeep> <white>in taxes.
             <gray>
