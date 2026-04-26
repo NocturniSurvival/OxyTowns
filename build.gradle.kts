@@ -23,6 +23,7 @@ repositories {
     maven("https://maven.enginehub.org/repo/")
     maven("https://jitpack.io")
     maven("https://repo.dmulloy2.net/nexus/repository/public/")
+    maven(url = "https://mvn.lumine.io/repository/maven-public/")
 }
 
 dependencies {
@@ -31,6 +32,7 @@ dependencies {
     compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.9")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7.1")
     compileOnly("xyz.jpenilla:squaremap-api:1.1.15")
+    compileOnly("io.lumine:Mythic-Dist:5.6.1")
 
     implementation("org.bstats:bstats-bukkit:3.0.2")
     implementation("org.spongepowered:configurate-yaml:4.1.2")
@@ -95,7 +97,7 @@ configure<BukkitPluginDescription> {
     version = "${project.version}"
 
     main = "com.oxywire.oxytowns.OxyTownsPlugin"
-    authors = listOf("SirKillian", "SirSalad", "Glare",)
+    authors = listOf("SirKillian", "SirSalad", "Glare", "ArcticDev_")
     depend = listOf("Vault")
     softDepend = listOf("WorldGuard", "PlaceholderAPI", "squaremap")
 }

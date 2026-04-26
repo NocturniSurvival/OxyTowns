@@ -4,6 +4,7 @@ import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.meta.CommandMeta;
 import cloud.commandframework.services.types.ConsumerService;
 import com.oxywire.oxytowns.addons.BStats;
+import com.oxywire.oxytowns.addons.MythicMobsAddon;
 import com.oxywire.oxytowns.addons.OxyTownsExpansion;
 import com.oxywire.oxytowns.addons.SquareMapAddon;
 import com.oxywire.oxytowns.api.OxyTownsApi;
@@ -155,6 +156,7 @@ public class OxyTownsPlugin extends JavaPlugin {
         new BStats(this);
         if (this.getServer().getPluginManager().isPluginEnabled("squaremap")) new SquareMapAddon();
         if (this.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) new OxyTownsExpansion();
+        if (this.getServer().getPluginManager().isPluginEnabled("MythicMobs")) new MythicMobsAddon();
     }
 
     @Override

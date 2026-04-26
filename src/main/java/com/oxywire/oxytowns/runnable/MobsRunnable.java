@@ -1,6 +1,7 @@
 package com.oxywire.oxytowns.runnable;
 
 import com.oxywire.oxytowns.OxyTownsPlugin;
+import com.oxywire.oxytowns.addons.MythicMobsAddon;
 import com.oxywire.oxytowns.cache.TownCache;
 import com.oxywire.oxytowns.config.Config;
 import com.oxywire.oxytowns.entities.impl.plot.Plot;
@@ -33,6 +34,9 @@ public final class MobsRunnable extends BukkitRunnable {
 
                 final Town town = TOWN_CACHE.getTownByLocation(entity.getLocation());
                 if (town == null) continue;
+
+                MythicMobsAddon.removeIfMythicMob(entity);
+                if (!entity.isValid()) continue;
 
                 final Plot plot = town.getPlot(entity.getLocation());
                 if (plot != null) {
