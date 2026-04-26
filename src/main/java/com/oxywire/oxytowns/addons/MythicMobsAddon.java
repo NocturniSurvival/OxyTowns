@@ -41,8 +41,9 @@ public final class MythicMobsAddon implements Listener {
 
     public static void removeIfMythicMob(final Entity entity) {
         if (!hookActive) return;
+
         MythicBukkit.inst().getMobManager().getActiveMob(entity.getUniqueId()).ifPresent(activeMob -> {
-            if (!activeMob.getFaction().equalsIgnoreCase("friendly")) {
+            if (!"friendly".equalsIgnoreCase(activeMob.getFaction())) {
                 entity.remove();
             }
         });
