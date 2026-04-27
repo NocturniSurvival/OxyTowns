@@ -15,7 +15,7 @@ public final class MythicMobsAddon implements Listener {
     public static boolean hookActive = false;
 
     public MythicMobsAddon() {
-        OxyTownsPlugin.get().getLogger().log(Level.INFO, "MythicMobs hooked! Begone Nosfartutu!!");
+        OxyTownsPlugin.get().getLogger().log(Level.INFO, "MythicMobs hooked!");
         hookActive = true;
         OxyTownsPlugin.get().getServer().getPluginManager().registerEvents(this, OxyTownsPlugin.get());
     }
@@ -43,7 +43,7 @@ public final class MythicMobsAddon implements Listener {
         if (!hookActive) return;
 
         MythicBukkit.inst().getMobManager().getActiveMob(entity.getUniqueId()).ifPresent(activeMob -> {
-            if (!"friendly".equalsIgnoreCase(activeMob.getFaction())) {
+            if (!"oxytowns".equalsIgnoreCase(activeMob.getFaction())) {
                 entity.remove();
             }
         });

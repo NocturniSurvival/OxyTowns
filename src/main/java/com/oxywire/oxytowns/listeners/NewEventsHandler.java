@@ -14,6 +14,7 @@ import com.oxywire.oxytowns.entities.types.PlotType;
 import com.oxywire.oxytowns.entities.types.perms.Permission;
 import com.oxywire.oxytowns.entities.types.settings.Setting;
 import com.oxywire.oxytowns.utils.ChunkPosition;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -722,6 +723,22 @@ public class NewEventsHandler implements Listener {
         if (town != null && town.getBannedUUIDs().contains(event.getPlayer().getUniqueId()) && !cache.isBypassing(event.getPlayer())) {
             Messages.get().getPlayer().getBannedWarningTitle().send(event.getPlayer());
             event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onItemTeleportIntoTown(PlayerTeleportEvent event) {
+        final PlayerTeleportEvent.TeleportCause cause = event.getCause();
+        if (cause != PlayerTeleportEvent.TeleportCause.CONSUMABLE_EFFECT && cause != PlayerTeleportEvent.TeleportCause.ENDER_PEARL) return;
+        final Player player = event.getPlayer();
+        if (cache.isBypassing(player)) return;
+        final Town town = cache.getTownByLocation(event.getTo());
+        if (town == null) return;
+        if (!town.isMemberOrOwner(player.getUniqueId())) {
+            event.setCancelled(true);
+            player.sendMessage(MiniMessage.miniMessage().deserialize(
+                "<red><b>Error</b> <dark_gray>» <red>You cannot teleport into a protected town."
+            ));
         }
     }
 
