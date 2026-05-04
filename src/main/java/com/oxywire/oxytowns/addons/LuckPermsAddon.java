@@ -18,23 +18,30 @@ import java.util.logging.Level;
 
 /**
  * Integrates OxyTowns with LuckPerms by registering a {@link ContextCalculator} that
- * injects the context {@code oxytowns:intruder=<TownName>} whenever a player is standing
- * inside a town they are not a member or owner of.
+ * injects one of two boolean contexts depending on the player's relationship to the
+ * town chunk they are currently standing in:
+ *
+ * <ul>
+ *   <li>{@code oxytowns:resident=true} — player is inside a town they own or are a member of</li>
+ *   <li>{@code oxytowns:intruder=true} — player is inside a town they have no membership in</li>
+ * </ul>
+ *
+ * Neither context is present while a player is in unclaimed wilderness.
  *
  * <p>Example LuckPerms usage:
  * <pre>
- *   /lp user Steve permission set some.permission true oxytowns:intruder=Riverdale
+ *   /lp user Steve permission set some.permission true oxytowns:intruder=true
+ *   /lp user Steve permission set some.permission true oxytowns:resident=true
  * </pre>
- * This grants {@code some.permission} to Steve only while he is intruding on Riverdale.
  *
- * <p>Context values are refreshed automatically when a player crosses a chunk boundary.
+ * <p>Contexts are refreshed automatically when a player crosses a chunk boundary.
  */
 public final class LuckPermsAddon implements ContextCalculator<Player>, Listener {
 
-    /**
-     * The LuckPerms context key injected when a player is intruding on a foreign town.
-     * The value is the name of the town being intruded upon.
-     */
+    /** Injected when the player is standing inside a town they own or are a member of. */
+    public static final String CONTEXT_RESIDENT = "oxytowns:resident";
+
+    /** Injected when the player is standing inside a town they have no membership in. */
     public static final String CONTEXT_INTRUDER = "oxytowns:intruder";
 
     private final LuckPerms luckPerms;
@@ -48,26 +55,31 @@ public final class LuckPermsAddon implements ContextCalculator<Player>, Listener
 
     /**
      * Called by LuckPerms whenever it needs to resolve contexts for a player.
-     * Injects {@code oxytowns:intruder=<TownName>} if the player is in a town
-     * they don't belong to.
+     * Exactly one of the two contexts is injected when the player is in claimed land;
+     * neither is injected in wilderness.
      */
     @Override
     public void calculate(@NonNull final Player target, @NonNull final ContextConsumer consumer) {
         final var town = OxyTownsPlugin.get().getTownCache().getTownByLocation(target.getLocation());
         if (town == null) return;
 
-        if (!town.isMemberOrOwner(target.getUniqueId())) {
-            consumer.accept(CONTEXT_INTRUDER, town.getName());
+        if (town.isMemberOrOwner(target.getUniqueId())) {
+            consumer.accept(CONTEXT_RESIDENT, "true");
+        } else {
+            consumer.accept(CONTEXT_INTRUDER, "true");
         }
     }
 
     /**
-     * Returns an empty set — the intruder context is entirely dynamic and cannot
-     * be enumerated ahead of time.
+     * Advertises the two possible contexts this calculator can produce so LuckPerms
+     * can use them for cache invalidation and tab-completion.
      */
     @Override
     public @NonNull ContextSet estimatePotentialContexts() {
-        return ImmutableContextSet.empty();
+        return ImmutableContextSet.builder()
+            .add(CONTEXT_RESIDENT, "true")
+            .add(CONTEXT_INTRUDER, "true")
+            .build();
     }
 
     /**
