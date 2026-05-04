@@ -30,7 +30,7 @@ import java.util.logging.Level;
  *
  * <p>Example LuckPerms usage:
  * <pre>
- *   /lp user Steve permission set some.permission true oxytowns:intruder=true
+ *   /lp user Steve permission set some.permission false oxytowns:intruder=true
  *   /lp user Steve permission set some.permission true oxytowns:resident=true
  * </pre>
  *
