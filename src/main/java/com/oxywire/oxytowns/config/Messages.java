@@ -245,6 +245,9 @@ public final class Messages {
         private Message townTransferMayorSuccess = new Message().setMessage("<gold><b>Info</b> <dark_gray>» <yellow><player> <gray>is now the mayor of the town.");
 
         @Setting
+        private Discord discord = new Discord();
+
+        @Setting
         private Plot plot = new Plot();
 
         @Setting
@@ -473,6 +476,28 @@ public final class Messages {
                 <gray>                        <click:run_command:/t cancel><red><bold>[Cancel]</click>     <click:run_command:/t unclaim confirm><green><bold>[Confirm]</click>
                 <gray>                 <gold><st>
                 """);
+
+        }
+
+        @Getter
+        @ConfigSerializable
+        public static final class Discord {
+
+            @Setting
+            private Message webhookSet = new Message().setMessage(
+                "<gold><b>Info</b> <dark_gray>» <green>Discord webhook successfully configured for your town.");
+
+            @Setting
+            private Message webhookRemoved = new Message().setMessage(
+                "<gold><b>Info</b> <dark_gray>» <red>Discord webhook has been removed from your town.");
+
+            @Setting
+            private Message webhookInvalidUrl = new Message().setMessage(
+                "<red><b>Error</b> <dark_gray>» <red>Invalid webhook URL. Must be a valid Discord webhook URL.");
+
+            @Setting
+            private Message webhookAlreadyRemoved = new Message().setMessage(
+                "<red><b>Error</b> <dark_gray>» <red>Your town does not have a Discord webhook configured.");
 
         }
 

@@ -65,6 +65,12 @@ public final class Config {
     @Setting
     private TownChat townChat = new TownChat();
 
+    @Setting
+    private DiscordWebhook discordWebhook = new DiscordWebhook();
+
+    @Setting
+    private Hooks hooks = new Hooks();
+
     public static Config get() {
         return OxyTownsPlugin.configManager.get(Config.class);
     }
@@ -112,6 +118,53 @@ public final class Config {
 
         @Setting
         private Message format = new Message().setMessage("<blue>[Town] <white><sender>: <gray><message>");
+    }
+
+    @Getter
+    @ConfigSerializable
+    public static final class DiscordWebhook {
+
+        @Setting
+        private boolean enabled = true;
+
+        /**
+         * The username shown in Discord for webhook messages.
+         */
+        @Setting
+        private String username = "Town Chat";
+
+        /**
+         * Optional avatar URL for the webhook bot. Leave blank to use the webhook's default avatar.
+         */
+        @Setting
+        private String avatarUrl = "";
+
+        /**
+         * Message format. Supports <sender> and <message> placeholders.
+         * Note: this is plain text sent to Discord, not MiniMessage.
+         */
+        @Setting
+        private String messageFormat = "**<sender>**: <message>";
+    }
+
+    @Getter
+    @ConfigSerializable
+    public static final class Hooks {
+
+        /**
+         * Whether the LuckPerms context integration is active.
+         * Injects the 'oxytowns:intruder=&lt;TownName&gt;' context for players standing
+         * in a town they do not belong to.
+         */
+        @Setting
+        private boolean luckPerms = true;
+
+        /**
+         * Whether the MythicMobs integration is active.
+         * Prevents MythicMobs entities from spawning in or entering claimed town land.
+         */
+        @Setting
+        private boolean mythicMobs = false;
     }
 
     @Getter

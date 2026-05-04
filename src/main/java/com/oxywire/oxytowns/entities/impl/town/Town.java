@@ -80,6 +80,15 @@ public final class Town implements CreatedDateHolder, Organisation<UUID>, Forwar
     @Getter
     private final Date creationDate;
 
+    /**
+     * Discord webhook URL for this town's chat relay. Null if not configured.
+     * Only the town owner may set or clear this value.
+     */
+    @Setter
+    @Nullable
+    @Getter
+    private String discordWebhookUrl;
+
     private transient Cache<UUID, UUID> invitedPlayers = CacheBuilder.newBuilder()
         .expireAfterWrite(5, TimeUnit.MINUTES)
         .build();

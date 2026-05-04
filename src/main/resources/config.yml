@@ -254,3 +254,18 @@ town-chat:
   enabled: true
   # This is the format of the town chat message.
   format: "<green>[Town] <white><sender>: <gray><message>"
+
+# Addon hook toggles. Enable or disable third-party plugin integrations here.
+hooks:
+  # LuckPerms context integration.
+  # When enabled, OxyTowns registers a ContextCalculator that injects the context
+  # 'oxytowns:intruder=<TownName>' into any player who is standing in a town they
+  # are not a member or owner of. Use this in LuckPerms to create permission rules
+  # that apply specifically to intruders (e.g. deny building, restrict commands).
+  # Requires LuckPerms to be installed. Defaults to true.
+  luck-perms: true
+  # MythicMobs integration.
+  # When enabled, prevents MythicMobs from spawning in or pathing into claimed town
+  # land (unless the mob belongs to the 'oxytowns' faction).
+  # Requires MythicMobs to be installed. Defaults to false.
+  mythic-mobs: false

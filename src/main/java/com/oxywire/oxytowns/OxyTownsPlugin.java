@@ -4,6 +4,8 @@ import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.meta.CommandMeta;
 import cloud.commandframework.services.types.ConsumerService;
 import com.oxywire.oxytowns.addons.BStats;
+import com.oxywire.oxytowns.addons.DiscordAddon;
+import com.oxywire.oxytowns.addons.LuckPermsAddon;
 import com.oxywire.oxytowns.addons.MythicMobsAddon;
 import com.oxywire.oxytowns.addons.OxyTownsExpansion;
 import com.oxywire.oxytowns.addons.SquareMapAddon;
@@ -24,6 +26,7 @@ import com.oxywire.oxytowns.config.Messages;
 import com.oxywire.oxytowns.config.UpkeepTimes;
 import com.oxywire.oxytowns.config.internal.ConfigManager;
 import com.oxywire.oxytowns.entities.impl.town.Town;
+import com.oxywire.oxytowns.events.TownChatEvent;
 import com.oxywire.oxytowns.listeners.NewEventsHandler;
 import com.oxywire.oxytowns.menu.Menu;
 import com.oxywire.oxytowns.runnable.MobsRunnable;
@@ -49,6 +52,7 @@ public class OxyTownsPlugin extends JavaPlugin {
     private Economy economy;
     private OxyTownsApi oxyTownsApi;
     private TaxSchedule taxSchedule;
+    private DiscordAddon discordAddon;
 
     @Override
     public void onEnable() {
@@ -140,7 +144,11 @@ public class OxyTownsPlugin extends JavaPlugin {
                             Messages.get().getTown().getNoTown().send(sender);
                             return;
                         }
-                        Config.get().getTownChat().getFormat().send(town, Placeholder.unparsed("sender", sender.getName()), Placeholder.unparsed("message", context.get("message")));
+                        final String message = context.get("message");
+                        final TownChatEvent event = new TownChatEvent(town, sender, message);
+                        this.getServer().getPluginManager().callEvent(event);
+                        if (event.isCancelled()) return;
+                        Config.get().getTownChat().getFormat().send(town, Placeholder.unparsed("sender", sender.getName()), Placeholder.unparsed("message", message));
                     })
             );
         }
@@ -154,13 +162,18 @@ public class OxyTownsPlugin extends JavaPlugin {
 
     private void registerAddons() {
         new BStats(this);
+        this.discordAddon = new DiscordAddon();
         if (this.getServer().getPluginManager().isPluginEnabled("squaremap")) new SquareMapAddon();
         if (this.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) new OxyTownsExpansion();
-        if (this.getServer().getPluginManager().isPluginEnabled("MythicMobs")) new MythicMobsAddon();
+        if (this.getServer().getPluginManager().isPluginEnabled("LuckPerms") && Config.get().getHooks().isLuckPerms()) new LuckPermsAddon();
+        if (this.getServer().getPluginManager().isPluginEnabled("MythicMobs") && Config.get().getHooks().isMythicMobs()) new MythicMobsAddon();
     }
 
     @Override
     public void onDisable() {
+        if (this.discordAddon != null) {
+            this.discordAddon.shutdown();
+        }
         this.townCache.unloadTowns();
     }
 

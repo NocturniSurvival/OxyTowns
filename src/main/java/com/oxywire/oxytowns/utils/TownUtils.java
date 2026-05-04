@@ -12,7 +12,7 @@ import java.util.Set;
 @UtilityClass
 public final class TownUtils {
 
-    public final String VALID_NAME = "^[a-zA-Z0-9-_]+$";
+    public static final String VALID_NAME = "^[a-zA-Z0-9-_]+$";
 
     public boolean isNextToBorder(final Player player, final Town town) {
         final String world = player.getLocation().getWorld().getName();
